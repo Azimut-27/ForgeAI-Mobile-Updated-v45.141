@@ -58,7 +58,7 @@ import {
   X,
   Zap
 } from 'lucide-react';
-import { buildForgeCoachContext, generateForgeCoachResponse } from './lib/gemini';
+import { generateGeminiResponse } from './lib/gemini';
 import {
   createFallbackMovementProfile,
   getMovementProfileByName,
@@ -8317,7 +8317,7 @@ export default function WorkoutGenerator() {
       });
 
       try {
-        const data = await generateForgeCoachResponse({ ...context, demoResponse });
+        const data = await generateGeminiResponse({ ...context, demoResponse });
         setAiResponse(String(data.answer || demoResponse).slice(0, outputLimit));
         setAiMode(data.mode === 'live' ? 'live' : 'demo');
         if (data.error) setAiError(data.error);
