@@ -64,7 +64,7 @@ import {
   getMovementProfileByName,
   getMovementProfileBySlug,
   slugifyExerciseName
-} from './data/exerciseMovementDatabase';
+ } from "./data/exerciseMovementDatabase_v45.141";
 
 export default function WorkoutGenerator() {
   const [authUser, setAuthUser] = useState(() => {
