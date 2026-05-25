@@ -1,33 +1,31 @@
-const GEMINI_API_KEY = "AIzaSyD8aB2F_MhY_oLfdUrvdyGqYA7Gk9Iob8Q";
 export function buildForgeCoachContext(context) {
   return context;
 }
+
 export async function generateGeminiResponse(context) {
-  const prompt =
-  typeof context === "string"
-    ? context
-    : JSON.stringify(context, null, 2);
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-    {
+  try {
+    const response = await fetch("/api/ai-coach", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [{ text: prompt }],
-          },
-        ],
-      }),
+      body: JSON.stringify(context),
+    });
+
+    // Better error handling
+    if (!response.ok) {
+      throw new Error("AI request failed");
     }
-  );
 
-  const data = await response.json();
+    const data = await response.json();
 
-  return (
-    data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-    "No response generated."
-  );
+    return (
+      data?.answer ||
+      "ForgeAI Coach could not generate a response."
+    );
+  } catch (error) {
+    console.error("ForgeAI AI Error:", error);
+
+    return "ForgeAI Coach is temporarily unavailable.";
+  }
 }
